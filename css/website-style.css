@@ -21,21 +21,18 @@
   --primary-font: 'Roboto', Arial, sans-serif;
 }
 
-#themeToggle {
+.js #themeToggle {
   background: none;
   border: none;
   cursor: pointer;
   padding: 0.5rem;
-  display: flex;
   align-items: center;
 }
-
-#themeIcon {
+.js #themeIcon {
   width: 28px;
   height: 28px;
   transition: transform 0.3s ease-in-out;
-}
-
+} 
 #themeToggle:hover #themeIcon {
   transform: scale(1.1);
 }
@@ -369,4 +366,26 @@ cite a img {
 }
 .spin {
   animation: spin 2s linear infinite;
+}
+
+.flash {
+  animation: flash-bg 0.5s ease-out;
+}
+
+@keyframes flash-bg {
+  0% { background-color: #ffbdbd; }
+  100% { background-color: transparent; }
+}
+
+#charCount.warning {
+  color: #d9534f;
+  font-weight: bold;
+}
+
+#errorOutput {
+  transition: opacity 2s ease-out;
+}
+
+#errorOutput.fade-out {
+  opacity: 0;
 }

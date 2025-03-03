@@ -1,13 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class = "no-js" lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Contact Form - JS Validation & Masking</title>
   <link rel="stylesheet" href="css/form-style.css">
   <link rel="stylesheet" href="css/website-style.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-
-
+  <style>
+    .no-js #themeIcon {
+      display: none;
+    }
+  </style>
 </head>
 <body data-theme="light">
   <noscript>
@@ -196,9 +199,32 @@
     </section>
     <p>&copy; 2024 Ulises Blog</p>
   </footer>  
-  <script src="js/script.js"></script>
 
   <script>
+    document.documentElement.classList.remove('no-js');
+    document.documentElement.classList.add('js');
+
+    // theme switcher
+    document.addEventListener('DOMContentLoaded', () => {
+      const themeToggle = document.getElementById('themeToggle');
+      const themeIcon = document.getElementById('themeIcon');
+
+      const storedTheme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', storedTheme);
+
+      themeIcon.src = storedTheme === 'dark' ? "images/sun-icon.webp" : "images/moon-icon.svg";
+      themeToggle.setAttribute("aria-label", storedTheme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode");
+
+      themeToggle.addEventListener('click', () => {
+        const newTheme = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+        document.documentElement.setAttribute("data-theme", newTheme);
+        localStorage.setItem("theme", newTheme);
+
+        themeIcon.src = newTheme === "dark" ? "images/sun-icon.webp" : "images/moon-icon.svg";
+        themeToggle.setAttribute("aria-label", newTheme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode");
+      });
+    });
+
     document.addEventListener('DOMContentLoaded', () => {
       let form_errors = [];
       const form             = document.getElementById('contactForm');
@@ -284,6 +310,18 @@
         if (messages.length > 0) {
           errorOutput.innerHTML = messages.join("<br>");
           errorOutput.style.display = "block";
+          errorOutput.style.opacity = 1;
+          setTimeout(() => {
+            errorOutput.style.transition = "opacity 1s ease-out";
+            errorOutput.style.opacity = 0;
+          }, 3000);
+        
+          errorOutput.addEventListener('transitionend', () => {
+            if (errorOutput.style.opacity === "0") {
+              errorOutput.style.display = "none";
+            }
+          });
+
         } else {
           errorOutput.innerHTML = "";
           errorOutput.style.display = "none";
