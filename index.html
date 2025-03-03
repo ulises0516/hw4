@@ -3,53 +3,200 @@
 <head>
   <meta charset="UTF-8">
   <title>Contact Form - JS Validation & Masking</title>
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/form-style.css">
+  <link rel="stylesheet" href="css/website-style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+
 </head>
-<body>
-  <form id="contactForm" action="https://httpbin.org/post" method="post" novalidate>
-    <input type="hidden" id="form-errors" name="form-errors" value="[]" />
-    
-    <label for="name" class="required">Name</label>
-    <input
-      type="text"
-      id="name"
-      name="name"
-      required
-      pattern="^[A-Za-z\s'-]+$"
-      title="Name section must only contain letters, spaces, apostrophes etc."
-    >
-    
-    <label for="email" class="required">Email</label>
-    <input
-      type="email"
-      id="email"
-      name="email"
-      required
-      title="Please enter a valid email address."
-    >
-    
-    <label for="comments" class="required">Comments</label>
-    <div class="textarea-container">
-      <textarea
-        id="comments"
-        name="comments"
-        required
-        minlength="10"
-        maxlength="500"
-      ></textarea>
-
-      <div id="charCount" class="char-counter">
-        Characters remaining: 500
-      </div>
+<body data-theme="light">
+  <noscript>
+    <p><strong>JavaScript is disabled.</strong> Some features may not work properly. Please enable JavaScript for the best experience.</p>
+  </noscript>
+  
+  <header>
+    <div class="header-container">
+        <h1>Ulises</h1>
+      <nav class="main-nav">
+        <ul>
+          <li><a href="#about-me">About Me</a></li>
+          <li><a href="#resume">Resume</a></li>
+          <li><a href="#portfolio">Portfolio</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <button id="themeToggle" aria-label="Toggle Dark Mode">
+        <img id="themeIcon" src="images/moon-icon.svg" alt="Theme Toggle">
+      </button>
     </div>
-    
-    <input type="hidden" name="possible_bot" value="true">
-    
-    <div id="errorOutput" class="error-output" aria-live="polite"></div>
+  </header>
 
+  <section id="hero">
+    <div class="hero-content">
+      <h2>Journey</h2>
+    </div>
+  </section>
+
+  <main>
+    <section id="about-me">
+      <h2>About Me</h2>
+      <div class="two-column">
+        <!-- left Column -->
+        <article>
+          <h3>BIO</h3>
+          <p>My current goals are to become a better programmer and reach 1000 LeetCode problems solved by the end of this year.</p>
+          <p>Outside of programming, I enjoy cooking, running, and playing chess. I hope to increase my chess Elo and run a marathon this year!</p>
+          <p><strong>Personal</strong></p>
+          <p>My favorite foods are spaghetti, avocados, and steak. I also love In-N-Out and milkshakes.</p>
+          <p>Basketball is my favorite sport to watch—and I play it during my free time.</p>
+        </article>
+
+        <!-- right column - image -->
+        <aside>
+          <figure>
+            <picture>
+              <source srcset="images/profilepic.webp" type="image/webp">
+              <source srcset="images/profilepic.jpg" type="image/jpeg">
+              <img src="images/profilepic.jpg" alt="protrait of ulises (me)" class="responsive-img">
+            </picture>
+            <figcaption> <em>picture of me!</em></figcaption>
+          </figure>
+        </aside>
+      </div>
+    </section>
+
+
+    <section id="resume">
+      <h2>Resume</h2>
+      <div class="responsive-pdf">
+        <iframe 
+          src="pdf/resume.pdf#zoom=page-width"
+          title="Ulises's Resume" 
+          allowfullscreen>
+        </iframe>
+      </div>
+    </section>
+
+    <section id="portfolio">
+      <h2>Portfolio/Projects</h2>
+      <div class="two-column">
+        <!-- left column  -->
+        <article>
+          <h3>WebClicker++<cite> 
+            <a href="https://github.com/CSES-Dev/webclicker-plusplus" target="_blank" rel="noopener">
+              <picture>
+                <source srcset="images/github-icon.webp" type="image/webp">
+                <source srcset="images/github-icon.jpg" type="image/jpeg">
+                <img src="images/github-icon.jpg" alt="View Project on GitHub" >
+              </picture>
+            </a>
+          </cite> 
+        </h3>
+          <p>Developing a web-based iClicker replacement with a Q&A interface and professor tools. </p>
+          <p>Implemented authentication using Next.js OAuth with Prisma for user management and protected pages using middleware to ensure secure access control</p>
+          <blockquote>
+            <p>Innovating attendance</p>
+          </blockquote>
+        </article>
     
-    <button type="submit">Submit</button>
-  </form>
+        <!-- right column -img -->
+        <aside>
+          <figure>
+            <picture>
+              <source srcset="images/webclicker.webp" type="image/webp">
+              <source srcset="images/webclicker.jpg" type="image/jpeg">
+              <img src="images/webclicker.jpg" alt="Image of Project" class="responsive-img">
+            </picture>
+          </figure>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <section id="contact">
+      <h2>Connect</h2>
+      <address class="contact-icons">
+        <a href="https://www.linkedin.com/in/ulises-salinas/" target="_blank" rel="noopener">
+          <picture>
+            <source srcset="images/linkedin-icon.webp" type="image/webp">
+            <source srcset="images/linkedin-icon.svg" type="image/svg">
+            <img src="images/linkedin-icon.svg" alt="LinkedIn">
+          </picture>
+        </a>
+        <a href="https://github.com/ulises0516" target="_blank" rel="noopener">
+          <picture>
+            <source srcset="images/github-icon.webp" type="image/webp">
+            <source srcset="images/github-icon.svg" type="image/svg">
+            <img src="images/github-icon.svg" alt="GitHub">
+          </picture>
+        </a>
+        <a href="mailto:usalinas595@gmail.com">
+          <picture>
+            <source srcset="images/email-icon.webp" type="image/webp">
+            <source srcset="images/email-icon.svg" type="image/svg">
+            <img src="images/email-icon.svg" alt="Email">
+          </picture>
+        </a>
+        <button id="openModalBtn" class="contact-button">Contact Me</button>
+
+      </address>
+
+
+  <dialog id="contactModal">
+    <form id="contactForm" method="dialog" novalidate>
+      <input type="hidden" id="form-errors" name="form-errors" value="[]" />
+
+      <h2>Contact Me</h2>
+
+      <label for="name" class="required">Name</label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        required
+        pattern="^[A-Za-z\s'-]+$"
+        placeholder="Your Name"
+        title="Name can only contain letters, spaces, apostrophes, or hyphens."
+      >
+
+      <label for="email" class="required">Email</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        required
+        placeholder="john@domain.com"
+        title="Please enter a valid email address."
+      >
+
+      <label for="comments" class="required">Comments</label>
+      <div class="textarea-container">
+        <textarea
+          id="comments"
+          name="comments"
+          required
+          minlength="20"
+          maxlength="500"
+          placeholder="message..."
+        ></textarea>
+        <div id="charCount" class="char-counter">Characters remaining: 500</div>
+      </div>
+
+      <div id="errorOutput" class="error-output" aria-live="polite"></div>
+
+      <input type="hidden" name="possible_bot" value="true">
+
+      <menu class="dialog-menu">
+        <button type="button" id="closeModalBtn" class="close-modal-btn">Close</button>
+        <button type="submit" id="submitBtn" class="submit-modal-btn">Submit</button>
+      </menu>
+    </form>
+  </dialog>
+
+    </section>
+    <p>&copy; 2024 Ulises Blog</p>
+  </footer>  
   <script src="js/script.js"></script>
 </body>
 </html>
