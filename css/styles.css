@@ -1,0 +1,92 @@
+body {
+  font-family: sans-serif;
+  max-width: 400px;
+  margin: auto;
+  margin-top: 1rem;
+  padding: 1rem;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.required::after {
+  content: " *";
+  color: red;
+}
+
+input[type="text"],
+input[type="email"],
+textarea {
+  width: 100%;
+  padding: 0.5rem;
+  box-sizing: border-box;
+}
+
+input:invalid,
+textarea:invalid {
+  border: 2px solid red;
+}
+input:valid,
+textarea:valid {
+  border: 2px solid green;
+}
+
+.flash {
+  animation: flash 0.5s ease;
+}
+@keyframes flash {
+  0%   { background-color: #ffdddd; }
+  100% { background-color: white; }
+}
+
+button {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+.textarea-container {
+  position: relative;
+  width: 100%;
+}
+
+textarea {
+  width: 100%;
+  padding: 0.5rem;
+  box-sizing: border-box;
+  resize: vertical; 
+  min-height: 150px;
+}
+
+.char-counter {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.75rem;
+  color: #666;
+  font-size: 0.9rem;
+  pointer-events: none; 
+  background-color: rgb(255, 255, 255); 
+  padding: 2px 5px;
+  border-radius: 4px;
+}
+
+.char-counter.warning {
+  color: #fff;
+  background-color: #dc5651;
+}
+
+#errorOutput {
+  color: red;
+  font-size: 0.9rem;
+  text-align: left;
+  display: none;
+}
+
+
