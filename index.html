@@ -138,65 +138,230 @@
             <img src="images/email-icon.svg" alt="Email">
           </picture>
         </a>
-        <button id="openModalBtn" class="contact-button">Contact Me</button>
+        <!-- <button id="openModalBtn" class="contact-button">Contact Me</button> -->
 
       </address>
 
 
-  <dialog id="contactModal">
-    <form id="contactForm" method="dialog" novalidate>
-      <input type="hidden" id="form-errors" name="form-errors" value="[]" />
-
-      <h2>Contact Me</h2>
-
-      <label for="name" class="required">Name</label>
-      <input
-        type="text"
-        id="name"
-        name="name"
-        required
-        pattern="^[A-Za-z\s'-]+$"
-        placeholder="Your Name"
-        title="Name can only contain letters, spaces, apostrophes, or hyphens."
-      >
-
-      <label for="email" class="required">Email</label>
-      <input
-        type="email"
-        id="email"
-        name="email"
-        required
-        placeholder="john@domain.com"
-        title="Please enter a valid email address."
-      >
-
-      <label for="comments" class="required">Comments</label>
-      <div class="textarea-container">
-        <textarea
-          id="comments"
-          name="comments"
-          required
-          minlength="20"
-          maxlength="500"
-          placeholder="message..."
-        ></textarea>
-        <div id="charCount" class="char-counter">Characters remaining: 500</div>
-      </div>
-
-      <div id="errorOutput" class="error-output" aria-live="polite"></div>
-
-      <input type="hidden" name="possible_bot" value="true">
-
-      <menu class="dialog-menu">
-        <button type="button" id="closeModalBtn" class="close-modal-btn">Close</button>
-        <button type="submit" id="submitBtn" class="submit-modal-btn">Submit</button>
-      </menu>
-    </form>
-  </dialog>
+      <div id="contactModalContainer">
+        <form id="contactForm" action="https://httpbin.org/post" method="post" novalidate>
+          <input type="hidden" id="form-errors" name="form-errors" value="[]" />
+      
+          <h2>Contact Me</h2>
+      
+          <label for="name" class="required">Name</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            required
+            pattern="^[A-Za-z\s'\-]+$"
+            placeholder="Your Name"
+            title="Name can only contain letters, spaces, apostrophes, or hyphens."
+          >
+      
+          <label for="email" class="required">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            required
+            placeholder="john@domain.com"
+            title="Please enter a valid email address."
+          >
+      
+          <label for="comments" class="required">Comments</label>
+          <div class="textarea-container">
+            <textarea
+              id="comments"
+              name="comments"
+              required
+              minlength="20"
+              maxlength="500"
+              placeholder="message..."
+            ></textarea>
+            <div id="charCount" class="char-counter">Characters remaining: 500</div>
+          </div>
+      
+          <div id="errorOutput" class="error-output" aria-live="polite"></div>
+      
+          <input type="hidden" name="possible_bot" value="true">
+      
+          <div class="form-buttons">
+            <button type="submit" id="submitBtn" class="submit-modal-btn">Submit</button>
+          </div>
+        </form>
+      </div>      
 
     </section>
     <p>&copy; 2024 Ulises Blog</p>
   </footer>  
   <script src="js/script.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      let form_errors = [];
+      const form             = document.getElementById('contactForm');
+      const nameInput        = document.getElementById('name');
+      const emailInput       = document.getElementById('email');
+      const commentsTxtarea  = document.getElementById('comments');
+      const charCount        = document.getElementById('charCount');
+      const errorOutput      = document.getElementById('errorOutput');
+      const formErrField     = document.getElementById('form-errors');
+    
+      const allowedCharRegex = /[A-Za-z\s'\-]/; 
+      const maxChars = 500;
+    
+      console.log({ form, nameInput, emailInput, commentsTxtarea, charCount, errorOutput, formErrField });
+    
+      nameInput.addEventListener('input', () => {
+        console.log("Name input event triggered");
+        const originalValue = nameInput.value;
+        const sanitizedValue = originalValue
+          .split('')
+          .filter(ch => allowedCharRegex.test(ch))
+          .join('');
+    
+        if (originalValue !== sanitizedValue) {
+          nameInput.classList.add('flash');
+          nameInput.setCustomValidity("Name can only contain letters, spaces, apostrophes, or hyphens.");
+          nameInput.value = sanitizedValue;
+          setTimeout(() => {
+            nameInput.classList.remove('flash');
+          }, 500);
+        } else {
+          nameInput.setCustomValidity("");
+        }
+        showFieldErrors();
+      });
+    
+      commentsTxtarea.addEventListener('input', () => {
+        const currentLength = commentsTxtarea.value.length;
+        const remaining = maxChars - currentLength;
+        charCount.textContent = `characters remaining: ${remaining}`;
+    
+        if (remaining < 100) {
+          charCount.classList.add('warning');
+        } else {
+          charCount.classList.remove('warning');
+        }
+    
+        if (remaining < 0) {
+          commentsTxtarea.setCustomValidity("You have exceeded the maximum allowed characters.");
+        } else {
+          commentsTxtarea.setCustomValidity("");
+        }
+        showFieldErrors();
+      });
+    
+      emailInput.addEventListener('blur', showFieldErrors);
+      nameInput.addEventListener('blur', showFieldErrors);
+      commentsTxtarea.addEventListener('blur', showFieldErrors);
+    
+      function showFieldErrors() {
+        let messages = [];
+    
+        if (!nameInput.value.trim()) {
+          messages.push("Name cannot be empty.");
+        } else if (!nameInput.validity.valid) {
+          messages.push(`Name ("${nameInput.value}"): ${nameInput.validationMessage}`);
+        }
+    
+        if (!emailInput.value.trim()) {
+          messages.push("Email cannot be empty.");
+        } else if (!emailInput.validity.valid) {
+          messages.push("Invalid email format.");
+        }
+    
+        if (!commentsTxtarea.value.trim()) {
+          messages.push("Comments cannot be empty.");
+        } else if (commentsTxtarea.value.length < 20) {
+          messages.push("Comments must be at least 20 characters.");
+        } else if (!commentsTxtarea.validity.valid) {
+          messages.push(commentsTxtarea.validationMessage);
+        }
+    
+        if (messages.length > 0) {
+          errorOutput.innerHTML = messages.join("<br>");
+          errorOutput.style.display = "block";
+        } else {
+          errorOutput.innerHTML = "";
+          errorOutput.style.display = "none";
+        }
+      }
+    
+      form.addEventListener('submit', (e) => {
+        form_errors = [];
+        let messages = [];
+        if (nameInput.value.trim()) {
+          if (!nameInput.validity.valid) {
+            messages.push(`Name ("${nameInput.value}"): ${nameInput.validationMessage}`);
+            form_errors.push({
+              field: 'name',
+              error: nameInput.validationMessage,
+              value: nameInput.value
+            });
+          }
+        } else {
+          messages.push("Name cannot be empty.");
+          form_errors.push({
+            field: 'name',
+            error: "Name cannot be empty.",
+            value: nameInput.value
+          });
+        }
+    
+        if (!emailInput.value.trim()) {
+          messages.push("Email cannot be empty.");
+          form_errors.push({
+            field: 'email',
+            error: "Email cannot be empty.",
+            value: emailInput.value
+          });
+        } else if (!emailInput.validity.valid) {
+          messages.push("Invalid email format.");
+          form_errors.push({
+            field: 'email',
+            error: "Invalid email format.",
+            value: emailInput.value
+          });
+        }
+    
+        if (!commentsTxtarea.value.trim()) {
+          messages.push("Comments cannot be empty.");
+          form_errors.push({
+            field: 'comments',
+            error: "comments cannot be empty.",
+            value: commentsTxtarea.value
+          });
+        } else if (commentsTxtarea.value.length < 20) {
+          messages.push("Comments must be at least 20 characters.");
+          form_errors.push({
+            field: 'comments',
+            error: "comments must be at least 20 characters.",
+            value: commentsTxtarea.value
+          });
+        } else if (!commentsTxtarea.validity.valid) {
+          messages.push(commentsTxtarea.validationMessage);
+          form_errors.push({
+            field: 'comments',
+            error: commentsTxtarea.validationMessage,
+            value: commentsTxtarea.value
+          });
+        }
+    
+        if (messages.length > 0) {
+          e.preventDefault();
+          errorOutput.innerHTML = messages.join("<br>");
+          errorOutput.style.display = "block";
+        } else {
+          errorOutput.innerHTML = "";
+          errorOutput.style.display = "none";
+        }
+      
+        formErrField.value = JSON.stringify(form_errors);
+      });
+    });
+  </script>
 </body>
 </html>
